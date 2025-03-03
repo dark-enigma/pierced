@@ -4,8 +4,7 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "PiercingThroughArmorMixin",
-    "projectileChecker",
-    "projectilePacketFix"
+    "projectileChecker"
   ],
   "injectors": {
     "defaultRequire": 1

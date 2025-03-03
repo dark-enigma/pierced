@@ -47,18 +47,12 @@ public class HarpoonEntity extends PersistentProjectileEntity {
     protected void onEntityHit(EntityHitResult entityHitResult) {
         Entity hitEntity = entityHitResult.getEntity();
 
-        // Check if the entity hit is the owner and is a player.
         if (hitEntity == this.getOwner() && hitEntity instanceof PlayerEntity player) {
-            // Ensure this only runs on the server side.
             if (!this.getWorld().isClient()) {
-                // Create the ItemStack for your harpoon item.
-                // Replace PiercedItems.HARPOON_ITEM with your actual harpoon item reference.
                 ItemStack harpoonStack = new ItemStack(ModItems.HARPOON);
-
-                // Try to insert the harpoon item into the player's inventory.
                 boolean addedToInventory = player.getInventory().insertStack(harpoonStack);
                 if (!addedToInventory) {
-                    // If it wasn't added (e.g., inventory is full), drop it at the player's location.
+
                     ItemEntity droppedHarpoon = new ItemEntity(
                             player.getWorld(),
                             player.getX(),
@@ -66,17 +60,14 @@ public class HarpoonEntity extends PersistentProjectileEntity {
                             player.getZ(),
                             harpoonStack
                     );
-                    // Set a short pickup delay if desired.
 
                     player.getWorld().spawnEntity(droppedHarpoon);
                 }
             }
-            // Remove the harpoon projectile.
             this.discard();
             return;
         }
 
-        // Otherwise, handle hits normally.
         super.onEntityHit(entityHitResult);
     }
     @Override
