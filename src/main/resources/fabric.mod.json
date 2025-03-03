@@ -1,0 +1,40 @@
+{
+	"schemaVersion": 1,
+	"id": "pierced",
+	"version": "${version}",
+	"name": "Pierced",
+	"description": "Piercing mod cool crossbows and changes to piercing enchant",
+	"authors": [
+		"Me!"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/pierced/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.dark.pierced.Pierced"
+		],
+		"fabric-datagen": [
+			"net.dark.pierced.PiercedDataGenerator"
+		],
+		"client": [
+			"net.dark.pierced.PiercedClient"
+		]
+	},
+	"mixins": [
+		"pierced.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.16.10",
+		"minecraft": "~1.21.1",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}

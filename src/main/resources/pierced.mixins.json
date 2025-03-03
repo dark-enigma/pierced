@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "package": "net.dark.pierced.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "PiercingThroughArmorMixin",
+    "projectileChecker",
+    "projectilePacketFix"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [
+    "armanimations",
+    "HeldItemRendererMixin",
+    "HideHandMixin"
+  ]
+}
