@@ -1,6 +1,8 @@
 package net.dark.pierced.mixin;
 
 import net.dark.pierced.item.ModItems;
+import net.dark.pierced.item.custom.HarpoonCrossbow;
+import net.dark.pierced.item.custom.LongCrossbow;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.Camera;
@@ -8,6 +10,7 @@ import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Hand;
@@ -26,13 +29,18 @@ public class HideHandMixin {
     private void hideHand(
             AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci
     ) {
-        // Check the main hand instead of the active item
-        var mainHandItem = player.getMainHandStack().getItem();
 
+            // Check the main hand instead of the active item
+            var mainHandItem = player.getMainHandStack().getItem();
 
-        if (mainHandItem == ModItems.LONGCROSSBOW && USING) {
+            if (CrossbowItem.isCharged(player.getMainHandStack())&&hand == hand.OFF_HAND && (mainHandItem == ModItems.LONGCROSSBOW || mainHandItem == ModItems.HARPOONCROSSBOW)) {
+                ci.cancel();
+            }
 
-            ci.cancel();
-        }
+            if (mainHandItem == ModItems.LONGCROSSBOW && USING) {
+
+                ci.cancel();
+            }
+
     }
 }

@@ -27,8 +27,16 @@ import java.util.List;
 import java.util.Objects;
 
 public class HarpoonEntity extends PersistentProjectileEntity {
+    private int life;
+    protected void age() {
+        this.life++;
+        if (this.life >= 500) {
+            this.discard();
+        }
+    }
     public HarpoonEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
+        this.setPierceLevel((byte) (this.getPierceLevel()+1));
     }
     boolean hitBlock =false;
     Vec3d blockLocation;
@@ -47,12 +55,18 @@ public class HarpoonEntity extends PersistentProjectileEntity {
     protected void onEntityHit(EntityHitResult entityHitResult) {
         Entity hitEntity = entityHitResult.getEntity();
 
+        // Check if the entity hit is the owner and is a player.
         if (hitEntity == this.getOwner() && hitEntity instanceof PlayerEntity player) {
+            // Ensure this only runs on the server side.
             if (!this.getWorld().isClient()) {
+                // Create the ItemStack for your harpoon item.
+                // Replace PiercedItems.HARPOON_ITEM with your actual harpoon item reference.
                 ItemStack harpoonStack = new ItemStack(ModItems.HARPOON);
+
+                // Try to insert the harpoon item into the player's inventory.
                 boolean addedToInventory = player.getInventory().insertStack(harpoonStack);
                 if (!addedToInventory) {
-
+                    // If it wasn't added (e.g., inventory is full), drop it at the player's location.
                     ItemEntity droppedHarpoon = new ItemEntity(
                             player.getWorld(),
                             player.getX(),
@@ -60,14 +74,17 @@ public class HarpoonEntity extends PersistentProjectileEntity {
                             player.getZ(),
                             harpoonStack
                     );
+                    // Set a short pickup delay if desired.
 
                     player.getWorld().spawnEntity(droppedHarpoon);
                 }
             }
+            // Remove the harpoon projectile.
             this.discard();
             return;
         }
 
+        // Otherwise, handle hits normally.
         super.onEntityHit(entityHitResult);
     }
     @Override
@@ -149,36 +166,40 @@ public class HarpoonEntity extends PersistentProjectileEntity {
     }
     @Override
     public void tick() {
-        if (getOwner() != null && hitBlock) {
+        if (getOwner() != null) {
             var owner = getOwner();
             var targetPos = this.getPos();
-            var currentPos = owner.getPos();
+            var currentPos = owner.getPos().add(0,owner.getEyeHeight(owner.getPose()),0);
             var velocity = owner.getVelocity();
             var relativePos = targetPos.subtract(currentPos);
             double distance = relativePos.length();
-
-            double stiffness = 0.15;
-            double damping = 0.9;
-            double minDistance = 0.02;
-            double maxSpeed = 0.3;
-            double farThreshold = 5.0;
-
-
-            Vec3d idealVelocity;
-            if (distance > farThreshold) {
-                idealVelocity = relativePos.normalize().multiply(maxSpeed);
-            } else {
-                idealVelocity = relativePos.multiply(stiffness);
+            if (distance>90){
+                SendingBack=true;
             }
-            var newVelocity = velocity.multiply(damping).add(idealVelocity);
+            if (hitBlock) {
+                double stiffness = 0.15;
+                double damping = 0.9;
+                double minDistance = 0.02;
+                double maxSpeed = 0.3;
+                double farThreshold = 5.0;
 
 
-            if (distance < minDistance) {
-                newVelocity = new Vec3d(0, 0, 0);
+                Vec3d idealVelocity;
+                if (distance > farThreshold) {
+                    idealVelocity = relativePos.normalize().multiply(maxSpeed);
+                } else {
+                    idealVelocity = relativePos.multiply(stiffness);
+                }
+                var newVelocity = velocity.multiply(damping).add(idealVelocity);
+
+
+                if (distance < minDistance) {
+                    newVelocity = new Vec3d(0, 0, 0);
+                }
+
+
+                owner.setVelocity(newVelocity);
             }
-
-
-            owner.setVelocity(newVelocity);
         }
         super.tick();
         if (this.getWorld().isClient) {
@@ -217,6 +238,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
             EntityType<? extends PersistentProjectileEntity> type, double x, double y, double z, World world, ItemStack stack, @Nullable ItemStack weapon
     ) {
         super(type,x,y,z,world,stack,weapon);
+        this.setPierceLevel((byte) (this.getPierceLevel()+1));
 
     }
 
