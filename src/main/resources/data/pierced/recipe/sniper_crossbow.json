@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#n#",
+    "LSL",
+    " T "
+  ],
+  "key": {
+    "#": "minecraft:oak_log",
+    "n": "minecraft:netherite_ingot",
+    "L": "minecraft:lead",
+    "S": "minecraft:spyglass",
+    "T": "minecraft:tripwire_hook"
+  },
+  "result": {
+    "id": "pierced:long_crossbow",
+    "count": 1
+  }
+}
