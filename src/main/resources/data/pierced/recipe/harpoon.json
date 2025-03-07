@@ -1,10 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "  i",
-    " / ",
-    "/  "
-  ],
+  "category": "equipment",
   "key": {
     "i": {
       "item": "minecraft:iron_ingot"
@@ -13,8 +9,13 @@
       "item": "minecraft:stick"
     }
   },
+  "pattern": [
+    "  i",
+    " / ",
+    "/  "
+  ],
   "result": {
-    "item": "pierced:harpoon",
-    "count": 1
+    "count": 1,
+    "id": "pierced:harpoon"
   }
 }

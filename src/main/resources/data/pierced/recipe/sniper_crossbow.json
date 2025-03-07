@@ -1,19 +1,30 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "equipment",
   "pattern": [
     "#n#",
     "LSL",
     " T "
   ],
   "key": {
-    "#": "minecraft:oak_log",
-    "n": "minecraft:netherite_ingot",
-    "L": "minecraft:lead",
-    "S": "minecraft:spyglass",
-    "T": "minecraft:tripwire_hook"
+    "#": {
+      "item": "minecraft:oak_log"
+    },
+    "n": {
+      "item": "minecraft:netherite_ingot"
+    },
+    "L": {
+      "item": "minecraft:lead"
+    },
+    "S": {
+      "item": "minecraft:spyglass"
+    },
+    "T": {
+      "item": "minecraft:tripwire_hook"
+    }
   },
   "result": {
-    "id": "pierced:long_crossbow",
-    "count": 1
+    "count": 1,
+    "id": "pierced:long_crossbow"
   }
 }

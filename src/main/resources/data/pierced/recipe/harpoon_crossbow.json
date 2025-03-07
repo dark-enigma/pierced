@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "equipment",
   "pattern": [
     "#I#",
     "STS",
@@ -20,7 +21,7 @@
     }
   },
   "result": {
-    "id": "pierced:harpoon_crossbow",
-    "count": 1
+    "count": 1,
+    "id": "pierced:harpoon_crossbow"
   }
 }
