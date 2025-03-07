@@ -173,7 +173,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
             var velocity = owner.getVelocity();
             var relativePos = targetPos.subtract(currentPos);
             double distance = relativePos.length();
-            if (distance>90){
+            if (distance>85 && !hitBlock){
                 SendingBack=true;
             }
             if (hitBlock) {

@@ -47,7 +47,8 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 public class HarpoonCrossbow extends CrossbowItem {
-    private static final float DEFAULT_PULL_TIME = 1.25F;
+
+    private static final float DEFAULT_PULL_TIME = 1.89F;
     public static final int RANGE = 8;
     private boolean charged = false;
     private boolean loaded = false;
@@ -61,6 +62,8 @@ public class HarpoonCrossbow extends CrossbowItem {
             Optional.of(SoundEvents.ITEM_CROSSBOW_LOADING_MIDDLE),
             Optional.of(SoundEvents.ITEM_CROSSBOW_LOADING_END)
     );
+
+
 
 
 
@@ -239,7 +242,7 @@ public class HarpoonCrossbow extends CrossbowItem {
     }
 
     public static int getPullTime(ItemStack stack, LivingEntity user) {
-        float f = EnchantmentHelper.getCrossbowChargeTime(stack, user, 1.25F);
+        float f = EnchantmentHelper.getCrossbowChargeTime(stack, user, DEFAULT_PULL_TIME);
         return MathHelper.floor(f * 20.0F);
     }
 
@@ -253,7 +256,7 @@ public class HarpoonCrossbow extends CrossbowItem {
                 .orElse(DEFAULT_LOADING_SOUNDS);
     }
 
-    private static float getPullProgress(int useTicks, ItemStack stack, LivingEntity user) {
+    public static float getPullProgress(int useTicks, ItemStack stack, LivingEntity user) {
         float f = (float)useTicks / (float)getPullTime(stack, user);
         if (f > 1.0F) {
             f = 1.0F;
