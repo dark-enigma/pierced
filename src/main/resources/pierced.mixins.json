@@ -11,6 +11,7 @@
   },
   "client": [
     "armanimations",
+    "GameRendererMixin",
     "HeldItemRendererMixin",
     "HideHandMixin"
   ]

@@ -3,6 +3,7 @@ package net.dark.pierced.item.custom;
 import com.google.common.collect.Lists;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.dark.pierced.zoomlyhandling;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.client.MinecraftClient;
@@ -50,6 +51,7 @@ public class LongCrossbow extends CrossbowItem {
     public static final float DEFAULT_PULL_TIME = 3.75F;
     public static final int RANGE = 30;
     private static final float DEFAULT_SPEED = 7.15F;
+    public static final float FOV_MULTIPLIER = 0.1F;
 
     private static final float FIREWORK_ROCKET_SPEED = 3.6F;
     private boolean charged = false;
@@ -68,7 +70,7 @@ public class LongCrossbow extends CrossbowItem {
     public static boolean STARTED = false;
     public static boolean infoStored = false;
 
-    public static final float FOV_MULTIPLIER = 0.1F;
+
     public static final float SENS_MULTIPLIER = 0.1F;
 
 
@@ -254,9 +256,8 @@ public class LongCrossbow extends CrossbowItem {
 
     @Override
     public UseAction getUseAction(ItemStack stack) {
-        return UseAction.CROSSBOW;
+        return UseAction.SPYGLASS;
     }
-
     CrossbowItem.LoadingSounds getLoadingSounds(ItemStack stack) {
         return (CrossbowItem.LoadingSounds)EnchantmentHelper.getEffect(stack, EnchantmentEffectComponentTypes.CROSSBOW_CHARGING_SOUNDS)
                 .orElse(DEFAULT_LOADING_SOUNDS);
@@ -322,13 +323,12 @@ public class LongCrossbow extends CrossbowItem {
             if (player.isSneaking()) {
                 if (player.getMainHandStack().isOf(stack.getItem())){
                     if (!USING && MinecraftClient.getInstance().options.getPerspective().isFirstPerson()) {
-//                        System.out.println(3);
+
                         STARTED=true;
                         if (!USING) {
                             player.playSound(SoundEvents.ITEM_SPYGLASS_USE, 1.0F, 1.0F);
 
-                            FOV = MinecraftClient.getInstance().options.getFov().getValue();
-                            SENSE = MinecraftClient.getInstance().options.getMouseSensitivity().getValue();
+
                             infoStored=true;
                         }
 
@@ -338,8 +338,8 @@ public class LongCrossbow extends CrossbowItem {
 
 
                         USING = true;
-                        MinecraftClient.getInstance().options.getFov().setValue((int) (Math.max(30, Math.min(110, FOV * FOV_MULTIPLIER))));
-                        MinecraftClient.getInstance().options.getMouseSensitivity().setValue((double) (SENSE * SENS_MULTIPLIER));
+                        zoomlyhandling.setZooming(true);
+
                     }
 
                 }
@@ -347,28 +347,26 @@ public class LongCrossbow extends CrossbowItem {
 
             } else {
                 if (USING&& STARTED) {
+                    zoomlyhandling.setZooming(false);
                     STARTED=false;
-//                    System.out.println(2);
 
-//                    System.out.println(player.getMainHandStack().isOf(stack.getItem()));
-                    MinecraftClient.getInstance().options.getFov().setValue((int) (FOV));
-                    MinecraftClient.getInstance().options.getMouseSensitivity().setValue((SENSE));
                     USING = false;
                 }
 
             }
             if (!player.getMainHandStack().isOf(stack.getItem()) && player.isSneaking()&& STARTED) {
-//                System.out.println(1);
+
+                zoomlyhandling.setZooming(false);
                 STARTED=false;
                 USING=false;
-                MinecraftClient.getInstance().options.getFov().setValue((int) (FOV));
-                MinecraftClient.getInstance().options.getMouseSensitivity().setValue((SENSE));
+
 
 
             }
 
         }
     }
+
 
 
 
