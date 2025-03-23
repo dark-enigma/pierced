@@ -7,7 +7,6 @@ import net.dark.pierced.zoomlyhandling;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.model.ModelPart;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.EnchantmentEffectComponentTypes;
 import net.minecraft.component.type.ChargedProjectilesComponent;
@@ -51,7 +50,7 @@ public class LongCrossbow extends CrossbowItem {
     public static final float DEFAULT_PULL_TIME = 3.75F;
     public static final int RANGE = 30;
     private static final float DEFAULT_SPEED = 7.15F;
-    public static final float FOV_MULTIPLIER = 0.1F;
+    public static final float FOV_MULTIPLIER = 1F;
 
     private static final float FIREWORK_ROCKET_SPEED = 3.6F;
     private boolean charged = false;
@@ -256,7 +255,7 @@ public class LongCrossbow extends CrossbowItem {
 
     @Override
     public UseAction getUseAction(ItemStack stack) {
-        return UseAction.SPYGLASS;
+        return UseAction.CROSSBOW;
     }
     CrossbowItem.LoadingSounds getLoadingSounds(ItemStack stack) {
         return (CrossbowItem.LoadingSounds)EnchantmentHelper.getEffect(stack, EnchantmentEffectComponentTypes.CROSSBOW_CHARGING_SOUNDS)
@@ -327,7 +326,6 @@ public class LongCrossbow extends CrossbowItem {
                         STARTED=true;
                         if (!USING) {
                             player.playSound(SoundEvents.ITEM_SPYGLASS_USE, 1.0F, 1.0F);
-
 
                             infoStored=true;
                         }

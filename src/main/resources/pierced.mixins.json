@@ -10,9 +10,12 @@
     "defaultRequire": 1
   },
   "client": [
+    "AbstractClientPlayerEntityMixin",
     "armanimations",
     "GameRendererMixin",
     "HeldItemRendererMixin",
-    "HideHandMixin"
+    "HideHandMixin",
+    "InGameHudMixin",
+    "MinecraftClientMixin"
   ]
 }
