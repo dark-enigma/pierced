@@ -2,14 +2,14 @@ package net.dark.pierced.entity.custom;
 
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.dark.pierced.item.ModItems;
+import net.dark.pierced.mixin.PersistentProjectileEntityAccessor;
 import net.minecraft.block.BlockState;
-import net.minecraft.client.gui.navigation.GuiNavigation;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -22,11 +22,10 @@ import net.minecraft.world.World;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.Method;
 import java.util.List;
-import java.util.Objects;
 
 public class HarpoonEntity extends PersistentProjectileEntity {
+
     private int life;
     protected void age() {
         this.life++;
@@ -36,7 +35,9 @@ public class HarpoonEntity extends PersistentProjectileEntity {
     }
     public HarpoonEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
         super(entityType, world);
-        this.setPierceLevel((byte) (this.getPierceLevel()+1));
+        TrackedData<Byte> pierceData = ((PersistentProjectileEntityAccessor) this).getPierceLevelTrackedData();
+
+        this.dataTracker.set(pierceData, (byte) (1 + this.getPierceLevel()));
     }
     boolean hitBlock =false;
     Vec3d blockLocation;
@@ -55,18 +56,13 @@ public class HarpoonEntity extends PersistentProjectileEntity {
     protected void onEntityHit(EntityHitResult entityHitResult) {
         Entity hitEntity = entityHitResult.getEntity();
 
-        // Check if the entity hit is the owner and is a player.
+
         if (hitEntity == this.getOwner() && hitEntity instanceof PlayerEntity player) {
-            // Ensure this only runs on the server side.
             if (!this.getWorld().isClient()) {
-                // Create the ItemStack for your harpoon item.
-                // Replace PiercedItems.HARPOON_ITEM with your actual harpoon item reference.
                 ItemStack harpoonStack = new ItemStack(ModItems.HARPOON);
 
-                // Try to insert the harpoon item into the player's inventory.
                 boolean addedToInventory = player.getInventory().insertStack(harpoonStack);
                 if (!addedToInventory) {
-                    // If it wasn't added (e.g., inventory is full), drop it at the player's location.
                     ItemEntity droppedHarpoon = new ItemEntity(
                             player.getWorld(),
                             player.getX(),
@@ -74,17 +70,14 @@ public class HarpoonEntity extends PersistentProjectileEntity {
                             player.getZ(),
                             harpoonStack
                     );
-                    // Set a short pickup delay if desired.
 
                     player.getWorld().spawnEntity(droppedHarpoon);
                 }
             }
-            // Remove the harpoon projectile.
             this.discard();
             return;
         }
 
-        // Otherwise, handle hits normally.
         super.onEntityHit(entityHitResult);
     }
     @Override
@@ -130,15 +123,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
         }
     }
 
-    public void setPierceLevel(byte level) {
-        try {
-            Method method = PersistentProjectileEntity.class.getDeclaredMethod("setPierceLevel", byte.class);
-            method.setAccessible(true);  // Make the method accessible
-            method.invoke(this, level);  // Invoke the method on the current instance
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+
     private void clearPiercingStatus() {
         if (this.piercingKilledEntities != null) {
             this.piercingKilledEntities.clear();
@@ -238,7 +223,10 @@ public class HarpoonEntity extends PersistentProjectileEntity {
             EntityType<? extends PersistentProjectileEntity> type, double x, double y, double z, World world, ItemStack stack, @Nullable ItemStack weapon
     ) {
         super(type,x,y,z,world,stack,weapon);
-        this.setPierceLevel((byte) (this.getPierceLevel()+1));
+        TrackedData<Byte> pierceData = ((PersistentProjectileEntityAccessor) this).getPierceLevelTrackedData();
+
+        this.dataTracker.set(pierceData, (byte) (1 + this.getPierceLevel()));
+
 
     }
 

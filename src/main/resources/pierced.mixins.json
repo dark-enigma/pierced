@@ -3,6 +3,7 @@
   "package": "net.dark.pierced.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "PersistentProjectileEntityAccessor",
     "PiercingThroughArmorMixin",
     "projectileChecker"
   ],
