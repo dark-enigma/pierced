@@ -40,22 +40,11 @@ public abstract class ItemRendererMixin {
     )
     public BakedModel renderItem(BakedModel bakedModel, @Local(argsOnly = true) ItemStack stack, @Local(argsOnly = true) ModelTransformationMode renderMode) {
         if (stack.getItem() == ModItems.HARPOONCROSSBOW && (renderMode == ModelTransformationMode.GUI || renderMode == ModelTransformationMode.GROUND || renderMode == ModelTransformationMode.FIXED)) {
-            return getModels().getModelManager().getModel(ModelIdentifier.ofInventoryVariant(Identifier.of(Pierced.MOD_ID, "harpoon_crossbow_hotbar")));
+            return getModels().getModelManager().getModel(ModelIdentifier.ofInventoryVariant(Identifier.of("pierced", "harpoon_crossbow_inventory")));
         }
 
         return bakedModel;
     }
 
-    @ModifyVariable(
-            method = "getModel",
-            at = @At(value = "STORE"),
-            ordinal = 1
-    )
-    public BakedModel getHeldItemModelMixin(BakedModel bakedModel, @Local(argsOnly = true) ItemStack stack) {
-        if (stack.getItem() == ModItems.HARPOONCROSSBOW) {
-            return this.models.getModelManager().getModel(ModelIdentifier.ofInventoryVariant(Identifier.of(Pierced.MOD_ID, "harpoon_crossbow")));
-        }
 
-        return bakedModel;
-    }
 }

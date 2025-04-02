@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "pierced:item/harpoon"
+    "layer0": "pierced:item/harpoon_crossbow_inventory"
   }
 }
