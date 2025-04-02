@@ -3,6 +3,7 @@
   "package": "net.dark.pierced.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "ModelLoaderMixin",
     "PersistentProjectileEntityAccessor",
     "PiercingThroughArmorMixin",
     "projectileChecker"
@@ -17,6 +18,7 @@
     "HeldItemRendererMixin",
     "HideHandMixin",
     "InGameHudMixin",
+    "ItemRendererMixin",
     "MinecraftClientMixin"
   ]
 }
