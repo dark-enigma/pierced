@@ -15,6 +15,8 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.CrossbowItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -33,6 +35,8 @@ public abstract class ItemRendererMixin {
     @Shadow
     public abstract ItemModels getModels();
 
+    @Shadow public abstract BakedModel getModel(ItemStack stack, @Nullable World world, @Nullable LivingEntity entity, int seed);
+
     @ModifyVariable(
             method = "renderItem(Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/render/model/json/ModelTransformationMode;ZLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;IILnet/minecraft/client/render/model/BakedModel;)V",
             at = @At(value = "HEAD"),
@@ -40,7 +44,11 @@ public abstract class ItemRendererMixin {
     )
     public BakedModel renderItem(BakedModel bakedModel, @Local(argsOnly = true) ItemStack stack, @Local(argsOnly = true) ModelTransformationMode renderMode) {
         if (stack.getItem() == ModItems.HARPOONCROSSBOW && (renderMode == ModelTransformationMode.GUI || renderMode == ModelTransformationMode.GROUND || renderMode == ModelTransformationMode.FIXED)) {
-            return getModels().getModelManager().getModel(ModelIdentifier.ofInventoryVariant(Identifier.of("pierced", "harpoon_crossbow_inventory")));
+            BakedModel baseModel = getModels().getModelManager().getModel(ModelIdentifier.ofInventoryVariant(Identifier.of("pierced", "harpoon_crossbow_inventory")));
+            LivingEntity entity = MinecraftClient.getInstance().player;
+
+            return baseModel.getOverrides().apply(baseModel, stack, null, entity, 0);
+
         }
 
         return bakedModel;

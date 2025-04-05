@@ -18,6 +18,7 @@
     "HideHandMixin",
     "InGameHudMixin",
     "ItemRendererMixin",
-    "MinecraftClientMixin"
+    "MinecraftClientMixin",
+    "ModelMixinLoader"
   ]
 }

@@ -1,0 +1,24 @@
+{
+	"parent": "minecraft:item/generated",
+	"textures": {
+		"layer0": "pierced:item/harpoon_crossbow_inventory"
+	},
+	"overrides": [
+		{
+			"predicate": { "pulling": 1 },
+			"model": "pierced:item/harpoon_crossbow_pulling_0_inventory"
+		},
+		{
+			"predicate": { "pulling": 1, "pull": 0.58 },
+			"model": "pierced:item/harpoon_crossbow_pulling_1_inventory"
+		},
+		{
+			"predicate": { "pulling": 1, "pull": 1.0 },
+			"model": "pierced:item/harpoon_crossbow_pulling_2_inventory"
+		},
+		{
+			"predicate": { "charged": 1 },
+			"model": "pierced:item/harpoon_crossbow_arrow_inventory"
+		}
+	]
+}
