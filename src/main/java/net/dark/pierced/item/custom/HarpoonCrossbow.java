@@ -7,6 +7,7 @@ import net.dark.pierced.entity.ModEntities;
 import net.dark.pierced.entity.custom.HarpoonEntity;
 import net.fabricmc.fabric.api.item.v1.EnchantingContext;
 import net.minecraft.advancement.criterion.Criteria;
+import net.minecraft.component.Component;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.EnchantmentEffectComponentTypes;
 import net.minecraft.component.type.ChargedProjectilesComponent;
@@ -48,10 +49,12 @@ import java.util.function.Predicate;
 
 public class HarpoonCrossbow extends CrossbowItem {
 
+
     private static final float DEFAULT_PULL_TIME = 1.89F;
     public static final int RANGE = 8;
     private boolean charged = false;
     private boolean loaded = false;
+    private boolean Should= false;
     private static final float CHARGE_PROGRESS = 0.2F;
     private static final float LOAD_PROGRESS = 0.5F;
     private static final float DEFAULT_SPEED = 3.15F;
@@ -80,6 +83,7 @@ public class HarpoonCrossbow extends CrossbowItem {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        this.Should=false;
         ItemStack itemStack = user.getStackInHand(hand);
 //        System.out.println(itemStack.get(DataComponentTypes.CHARGED_PROJECTILES));
         ChargedProjectilesComponent chargedProjectilesComponent = itemStack.get(DataComponentTypes.CHARGED_PROJECTILES);
@@ -149,10 +153,14 @@ public class HarpoonCrossbow extends CrossbowItem {
 
         return harpoonEntity;
     }
+    public boolean getShould(ItemStack stack) {
+        return this.Should;
+    }
 
     @Override
     protected void shoot(LivingEntity shooter, ProjectileEntity projectile, int index, float speed, float divergence, float yaw, @Nullable LivingEntity target) {
         Vector3f vector3f;
+        this.Should=true;
         if (target != null) {
             double d = target.getX() - shooter.getX();
             double e = target.getZ() - shooter.getZ();

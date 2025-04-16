@@ -2,6 +2,7 @@ package net.dark.pierced.entity.custom;
 
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.dark.pierced.item.ModItems;
+import net.dark.pierced.item.custom.HarpoonCrossbow;
 import net.dark.pierced.mixin.PersistentProjectileEntityAccessor;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
@@ -60,7 +61,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
         if (hitEntity == this.getOwner() && hitEntity instanceof PlayerEntity player) {
             if (!this.getWorld().isClient()) {
                 ItemStack harpoonStack = new ItemStack(ModItems.HARPOON);
-
+                System.out.println(1);
                 boolean addedToInventory = player.getInventory().insertStack(harpoonStack);
                 if (!addedToInventory) {
                     ItemEntity droppedHarpoon = new ItemEntity(
@@ -83,9 +84,27 @@ public class HarpoonEntity extends PersistentProjectileEntity {
     @Override
     public void onPlayerCollision(PlayerEntity player) {
         if (!this.getWorld().isClient && (this.inGround || this.isNoClip()) && this.shake <= 0) {
-            if (this.tryPickup(player)) {
-                player.sendPickup(this, 1);
+//            System.out.println(this.tryPickup(player));
+            if (player == this.getOwner()) {
+                if (!this.getWorld().isClient()) {
+                    ItemStack harpoonStack = new ItemStack(ModItems.HARPOON);
+                    System.out.println(2);
+
+                    boolean addedToInventory = player.getInventory().insertStack(harpoonStack);
+                    if (!addedToInventory) {
+                        ItemEntity droppedHarpoon = new ItemEntity(
+                                player.getWorld(),
+                                player.getX(),
+                                player.getY(),
+                                player.getZ(),
+                                harpoonStack
+                        );
+                        player.getWorld().spawnEntity(droppedHarpoon);
+
+                    }
+                }
                 this.discard();
+                return;
             }
         }
     }
@@ -152,7 +171,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
     @Override
     public void tick() {
         if (getOwner() != null) {
-            var owner = getOwner();
+            PlayerEntity owner = (PlayerEntity) getOwner();
             var targetPos = this.getPos();
             var currentPos = owner.getPos().add(0,owner.getEyeHeight(owner.getPose()),0);
             var velocity = owner.getVelocity();
@@ -161,7 +180,8 @@ public class HarpoonEntity extends PersistentProjectileEntity {
             if (distance>85 && !hitBlock){
                 SendingBack=true;
             }
-            if (hitBlock) {
+
+            if (hitBlock&& (!owner.isSneaking())) {
                 double stiffness = 0.15;
                 double damping = 0.9;
                 double minDistance = 0.02;
