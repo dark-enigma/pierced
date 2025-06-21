@@ -4,29 +4,18 @@ import net.dark.pierced.Pierced;
 import net.dark.pierced.entity.custom.HarpoonEntity;
 import net.dark.pierced.entity.custom.HarpoonModel;
 import net.minecraft.client.render.*;
-import net.minecraft.client.render.debug.DebugRenderer;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
-import net.minecraft.client.render.entity.MobEntityRenderer;
-import net.minecraft.client.render.entity.model.EntityModelLayers;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Arm;
-import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
-
-
-import static com.ibm.icu.impl.CurrencyData.provider;
-import static java.awt.Color.*;
 
 public class HarpoonEntityRenderer extends EntityRenderer<HarpoonEntity> {
     public static final Identifier TEXTURE = Identifier.of(Pierced.MOD_ID,"textures/entity/harpoon.png");
@@ -64,8 +53,6 @@ public class HarpoonEntityRenderer extends EntityRenderer<HarpoonEntity> {
                         .rotateY((yawAngle + 90.0F) * ((float) Math.PI / 180F))
                         .add(0.0F, (entity.getHeight()) / 2.0F, 0.0F);
 
-                Vec3d leashPos = livingOwner.getLerpedPos(tickDelta);
-
                 Vec3d eyePos = livingOwner.getCameraPosVec(tickDelta).subtract(0, 0.4, 0);
 
 
@@ -77,7 +64,6 @@ public class HarpoonEntityRenderer extends EntityRenderer<HarpoonEntity> {
 
                 MatrixStack.Entry matrixEntry = matrices.peek();
                 Matrix4f modelMatrix = matrixEntry.getPositionMatrix();
-                Matrix3f normalMatrix = matrixEntry.getNormalMatrix();
 
                 float minU = 0.0F;
                 float maxU = 1.0F;
@@ -116,7 +102,7 @@ public class HarpoonEntityRenderer extends EntityRenderer<HarpoonEntity> {
                         .overlay(OverlayTexture.DEFAULT_UV)
                         .light(chainLight)
                         .normal(matrixEntry, 0.0F, 1.0F, 0.0F);
-                vertexConsumer2.vertex(modelMatrix, (float) vert4.x, (float) ((float) vert4.y), (float) vert4.z)
+                vertexConsumer2.vertex(modelMatrix, (float) vert4.x, (float) vert4.y, (float) vert4.z)
                         .color(255, 255, 255, 255)
                         .texture(maxU, minV)
                         .overlay(OverlayTexture.DEFAULT_UV)

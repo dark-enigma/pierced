@@ -2,9 +2,7 @@ package net.dark.pierced.entity.custom;
 
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.dark.pierced.item.ModItems;
-import net.dark.pierced.item.custom.HarpoonCrossbow;
 import net.dark.pierced.mixin.PersistentProjectileEntityAccessor;
-import net.minecraft.block.BlockState;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -36,7 +34,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
         this.life++;
         if (this.life >= 500) {
             ItemEntity droppedHarpoon = new ItemEntity(
-                    Objects.requireNonNull(this.getOwner()).getWorld(),
+                    this.getWorld(),
                     this.getX(),
                     this.getY(),
                     this.getZ(),
@@ -55,8 +53,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
         this.dataTracker.set(pierceData, (byte) (1 + this.getPierceLevel()));
     }
     boolean hitBlock =false;
-    Vec3d blockLocation;
-    private BlockState inBlockState;
+
     @Nullable
     private IntOpenHashSet piercedEntities;
     Boolean SendingBack =false;
@@ -158,15 +155,6 @@ public class HarpoonEntity extends PersistentProjectileEntity {
     }
 
 
-    private void clearPiercingStatus() {
-        if (this.piercingKilledEntities != null) {
-            this.piercingKilledEntities.clear();
-        }
-
-        if (this.piercedEntities != null) {
-            this.piercedEntities.clear();
-        }
-    }
     @Override
     protected void onBlockHit(BlockHitResult blockHitResult) {
         super.onBlockHit(blockHitResult);
@@ -270,14 +258,6 @@ public class HarpoonEntity extends PersistentProjectileEntity {
         }
         super.tick();
         if (this.getWorld().isClient) {
-            if (this.inGround) {
-                if (this.inGroundTime % 5 == 0) {
-
-
-                }
-            } else {
-
-            }
         } else if (this.inGround && this.inGroundTime != 0 && this.inGroundTime >= 600) {
             this.getWorld().sendEntityStatus(this, (byte)0);
                 this.setStack(new ItemStack(ModItems.HARPOON));
