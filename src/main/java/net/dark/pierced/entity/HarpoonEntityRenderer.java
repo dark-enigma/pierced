@@ -31,11 +31,12 @@ import static java.awt.Color.*;
 public class HarpoonEntityRenderer extends EntityRenderer<HarpoonEntity> {
     public static final Identifier TEXTURE = Identifier.of(Pierced.MOD_ID,"textures/entity/harpoon.png");
     public static final RenderLayer CHAIN_LAYER = RenderLayer.getEntityCutoutNoCull(Identifier.of(Pierced.MOD_ID, "textures/entity/chain.png"));
-    private final HarpoonModel model;
+    private final HarpoonModel<HarpoonEntity> model;
+
 
     public HarpoonEntityRenderer(EntityRendererFactory.Context context) {
         super(context);
-        this.model = new HarpoonModel(context.getPart(HarpoonModel.HARPOON));
+        this.model = new HarpoonModel<>(context.getPart(HarpoonModel.HARPOON));
     }
 
     public void render(HarpoonEntity entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
@@ -67,14 +68,10 @@ public class HarpoonEntityRenderer extends EntityRenderer<HarpoonEntity> {
 
                 Vec3d eyePos = livingOwner.getCameraPosVec(tickDelta).subtract(0, 0.4, 0);
 
-                // Option B (alternative): If getCameraPosVec() isn't available, do:
-                // Vec3d eyePos = livingOwner.getLerpedPos(tickDelta)
-                //       .add(0.0, livingOwner.getEyeHeight(livingOwner.getPose()), 0.0);
 
-                // The vector from the hook to the player's eye
                 Vec3d ownerPos = eyePos.subtract(entityPos);
 
-                // Compute the chain length (used for texture V coords)
+
                 float length = (float) ringOffset.distanceTo(ownerPos);
 
 

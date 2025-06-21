@@ -51,6 +51,7 @@ public abstract class ItemRendererMixin {
 
         }
 
+
         return bakedModel;
     }
 

@@ -17,8 +17,9 @@ public class PiercedClient implements ClientModInitializer {
         ModModelPredicates.registerModelPredicates();
 
         EntityModelLayerRegistry.registerModelLayer(HarpoonModel.HARPOON, HarpoonModel::getTexturedModelData);
+
         EntityRendererRegistry.INSTANCE.register(ModEntities.HARPOON, HarpoonEntityRenderer::new);
-        
+
 
 
     }

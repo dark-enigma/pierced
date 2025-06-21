@@ -416,14 +416,14 @@
 	"gui_light": "front",
 	"display": {
 		"thirdperson_righthand": {
-			"rotation": [-90, 0, -45],
+			"rotation": [-90, 10, -45],
 			"translation": [0, 0.25, -0.5],
-			"scale": [1.22, 1.22, 1.22]
+			"scale": [1.6, 1.6, 1.6]
 		},
 		"thirdperson_lefthand": {
-			"rotation": [-90, 0, 45],
+			"rotation": [-90, 10, 45],
 			"translation": [0, 0.25, -0.5],
-			"scale": [1.12, 1.12, 1.12]
+			"scale": [1.6, 1.6, 1.6]
 		},
 		"firstperson_righthand": {
 			"rotation": [-86, 0, -54],
