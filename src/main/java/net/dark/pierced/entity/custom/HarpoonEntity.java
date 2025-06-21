@@ -1,6 +1,5 @@
 package net.dark.pierced.entity.custom;
 
-import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.dark.pierced.item.ModItems;
 import net.dark.pierced.mixin.PersistentProjectileEntityAccessor;
 import net.minecraft.client.MinecraftClient;
@@ -15,15 +14,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
-import java.util.Objects;
 
 public class HarpoonEntity extends PersistentProjectileEntity {
     private boolean swinging = false;
@@ -54,16 +49,10 @@ public class HarpoonEntity extends PersistentProjectileEntity {
     }
     boolean hitBlock =false;
 
-    @Nullable
-    private IntOpenHashSet piercedEntities;
+
     Boolean SendingBack =false;
-    @Nullable
-    private List<Entity> piercingKilledEntities;
 
 
-    private boolean shouldFall() {
-        return this.inGround && this.getWorld().isSpaceEmpty(new Box(this.getPos(), this.getPos()).expand(0.06));
-    }
     @Override
     protected void onEntityHit(EntityHitResult entityHitResult) {
         Entity hitEntity = entityHitResult.getEntity();
@@ -114,7 +103,6 @@ public class HarpoonEntity extends PersistentProjectileEntity {
                     }
                 }
                 this.discard();
-                return;
             }
         }
     }
@@ -257,8 +245,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
             }
         }
         super.tick();
-        if (this.getWorld().isClient) {
-        } else if (this.inGround && this.inGroundTime != 0 && this.inGroundTime >= 600) {
+        if (this.inGround && this.inGroundTime != 0 && this.inGroundTime >= 600) {
             this.getWorld().sendEntityStatus(this, (byte)0);
                 this.setStack(new ItemStack(ModItems.HARPOON));
         }
