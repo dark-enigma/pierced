@@ -25,6 +25,7 @@ public class ModEntities {
                     .build()
     );
 
+
     public static void registerModEntities() {
         System.out.println("Registering Mod Entities for pierced");
     }

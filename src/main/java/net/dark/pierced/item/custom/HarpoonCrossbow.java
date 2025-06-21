@@ -14,6 +14,7 @@ import net.minecraft.component.type.ChargedProjectilesComponent;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FireworkRocketEntity;
@@ -142,7 +143,7 @@ public class HarpoonCrossbow extends CrossbowItem {
     }
     @Override
     protected ProjectileEntity createArrowEntity(World world, LivingEntity shooter, ItemStack weaponStack, ItemStack projectileStack, boolean critical) {
-        HarpoonEntity harpoonEntity = new HarpoonEntity(ModEntities.HARPOON, shooter.getX(),shooter.getY(),shooter.getZ(),world,projectileStack,weaponStack);
+        HarpoonEntity harpoonEntity = new HarpoonEntity((EntityType<? extends PersistentProjectileEntity>) ModEntities.HARPOON, shooter.getX(),shooter.getY(),shooter.getZ(),world,projectileStack,weaponStack);
         harpoonEntity.setOwner(shooter);
         harpoonEntity.setPosition(shooter.getX(), shooter.getEyeY() - 0.1, shooter.getZ());
         harpoonEntity.setVelocity(shooter, shooter.getPitch(), shooter.getYaw(), 0.0F, 3.0F, 1.0F);

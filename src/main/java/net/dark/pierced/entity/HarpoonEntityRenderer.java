@@ -14,12 +14,12 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RotationAxis;
 import net.minecraft.util.math.Vec3d;
-import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
 public class HarpoonEntityRenderer extends EntityRenderer<HarpoonEntity> {
-    public static final Identifier TEXTURE = Identifier.of(Pierced.MOD_ID,"textures/entity/harpoon.png");
-    public static final RenderLayer CHAIN_LAYER = RenderLayer.getEntityCutoutNoCull(Identifier.of(Pierced.MOD_ID, "textures/entity/chain.png"));
+
+    public  final Identifier TEXTURE = Identifier.of(Pierced.MOD_ID,"textures/entity/harpoon.png");
+    public  final RenderLayer CHAIN_LAYER = RenderLayer.getEntityCutoutNoCull(Identifier.of(Pierced.MOD_ID, "textures/entity/chain.png"));
     private final HarpoonModel<HarpoonEntity> model;
 
 

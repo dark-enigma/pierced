@@ -9,6 +9,7 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -25,6 +26,16 @@ public class HarpoonEntity extends PersistentProjectileEntity {
     private double swingLength = 0.0;
 
     private int life;
+
+
+    public HarpoonEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
+        super(entityType, world);
+        TrackedData<Byte> pierceData = ((PersistentProjectileEntityAccessor) this).getPierceLevelTrackedData();
+        this.dataTracker.set(pierceData, (byte) (1 + this.getPierceLevel()));
+    }
+
+
+
     protected void age() {
         this.life++;
         if (this.life >= 500) {
@@ -41,12 +52,7 @@ public class HarpoonEntity extends PersistentProjectileEntity {
         }
     }
 
-    public HarpoonEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
-        super(entityType, world);
-        TrackedData<Byte> pierceData = ((PersistentProjectileEntityAccessor) this).getPierceLevelTrackedData();
 
-        this.dataTracker.set(pierceData, (byte) (1 + this.getPierceLevel()));
-    }
     boolean hitBlock =false;
 
 
